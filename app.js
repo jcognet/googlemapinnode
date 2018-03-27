@@ -1,12 +1,14 @@
 // Lancement de la configuration
-let server = require('./Service/server.js')
+const server = require('./Service/server')
 // Lancement du serveur qui s'occupe de la configuration :)
 server.start()
 // Les variables d'environnement ont bien été chargées, let's have fun :D
-let google_map = require('./Service/google_map.js')
-
-
+const google_map = require('./Service/google_map')
+const prompt = require('./Service/prompt')
 google_map.test()
-server.bye()
+google_map.geocode(prompt.getAddress(), (listAddress)=>{
+    server.bye()
+});
+
 
 //https://github.com/googlemaps/google-maps-services-js
