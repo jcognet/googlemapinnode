@@ -1,7 +1,8 @@
-const  checkService = require('./check_service')
+const  configService = require('./config')
 exports.start= ()=>{
     console.log("Bonjour, le serveur est lancé à "+printDate())
-    checkService.checkConfigFile()
+    configService.initConfig();
+    configService.checkConfigFile()
 }
 exports.bye = ()=>{
     console.log("Bye, le serveur va dormir à "+printDate())

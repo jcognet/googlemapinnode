@@ -3,6 +3,10 @@ const fs = require('fs')
 const configFile = 'config.env'
 const configFileDist = 'config.env.dist'
 
+
+exports.initConfig = ()=>{
+    require('dotenv').config({path:configFile})
+}
 exports.checkConfigFile = ()=>{
     let config = readConfigFile()
     console.log("Configuration présente : ", config)
@@ -19,6 +23,7 @@ exports.checkConfigFile = ()=>{
     if( listKeyNotUsed.length>0){
         console.debug("Attention, votre fichier de configuration  possède TROP de clés : "+listKeyNotUsed.join(', '))
     }
+
 }
 
 function readConfigFile(){
