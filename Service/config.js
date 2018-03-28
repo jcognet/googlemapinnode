@@ -40,7 +40,7 @@ function readFile(fileName){
 
 function checkPropertiesOfObject(object1, object2){
     let listLackingKey = []
-    for(let configLine in object1) {
+    for(const configLine of Object.getOwnPropertyNames(object1)) {
         if(!object2.hasOwnProperty(configLine)) {
             listLackingKey.push(configLine + "("+object1[configLine]+")")
         }

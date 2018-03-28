@@ -1,5 +1,8 @@
 # Custom
 config.env
+restaurant.json
+restaurant_full.json
+restaurant.csv
 
 
 # Created by https://www.gitignore.io/api/node,phpstorm
