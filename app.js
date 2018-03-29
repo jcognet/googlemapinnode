@@ -16,8 +16,9 @@ google_map.geocode(prompt.getAddress(), (listAddress)=>{
                 if(err) throw err
             })
             let wstream = fs.createWriteStream(process.env.RES_FILE_JSON);
-            for(const restaurant of listRestaurant)
-                wstream.write(serialize.serialize(restaurant)+"\r\n");
+            for(const restaurant of listRestaurant) {
+                wstream.write(serialize.serialize(restaurant) + "\r\n");
+            }
             wstream.end();
 
             server.bye()

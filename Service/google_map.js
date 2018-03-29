@@ -40,9 +40,9 @@ exports.geocode = geocode
 function places(address, callback) {
     console.log("On recherche les restaurants proches de  : " + address.address)
     googleMapsClient.placesNearby({
-        location: address.latitute + ',' + address.longitude,
-        radius: 5000,
-        type: 'restaurant'
+        'location': address.latitute + ',' + address.longitude,
+        'radius': 5000,
+        'type': 'restaurant'
 
     }, function (err, response) {
         if (err) {
@@ -65,28 +65,42 @@ function places(address, callback) {
             }
             listRestaurant.push(restaurant)
         }
-        // Création des images
-        for (const restaurant of listRestaurant) {
-            console.log(restaurant)
-            if (restaurant.photo !== undefined) {
-                console.log(restaurant.photo)
-                googleMapsClient.placesPhoto({
-                    photoreference: restaurant.photo,
-                    maxwidth: 500,
-                    maxheight: 500,
-                }, (err, response) => {
-                    restaurant.photo_url = response.requestUrl
-                    console.log(restaurant.photo_url)
-                    //callback(listRestaurant, response.json.results)
-                })
 
-            }
+        getPicturePlaceAsync(listRestaurant[0])
+
+        // Création des images pour une liste d'appel asynchrone
+        listPromises = []
+        for (let restaurant of listRestaurant) {
+            listPromises.push(getPicturePlaceAsync(restaurant))
         }
-
-        //callback(listRestaurant, response.json.results)
-
-
+        Promise.all(listPromises).then(listRestaurant =>
+            callback(listRestaurant, response.json.results)
+        )
     });
 }
 
 exports.places = places
+
+async function getPicturePlaceAsync(restaurant) {
+    return  await getPicturePlace(restaurant);
+}
+
+
+function getPicturePlace(restaurant) {
+    if (restaurant.photo) {
+        return new Promise(resolve => {
+            googleMapsClient.placesPhoto({
+                'photoreference': restaurant.photo,
+                'maxwidth': 500,
+                'maxheight': 500,
+            }, (err, response) => {
+                restaurant.photo_url = response.requestUrl
+                resolve(restaurant)
+            })
+        });
+    } else {
+        return new Promise(resolve => {
+            resolve(restaurant)
+        });
+    }
+}
