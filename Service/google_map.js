@@ -66,12 +66,10 @@ function places(address, callback) {
             listRestaurant.push(restaurant)
         }
 
-        getPicturePlaceAsync(listRestaurant[0])
-
         // Création des images pour une liste d'appel asynchrone
         listPromises = []
         for (let restaurant of listRestaurant) {
-            listPromises.push(getPicturePlaceAsync(restaurant))
+            listPromises.push(getPicturePlace(restaurant))
         }
         Promise.all(listPromises).then(listRestaurant =>
             callback(listRestaurant, response.json.results)
@@ -80,10 +78,6 @@ function places(address, callback) {
 }
 
 exports.places = places
-
-async function getPicturePlaceAsync(restaurant) {
-    return  await getPicturePlace(restaurant);
-}
 
 
 function getPicturePlace(restaurant) {
